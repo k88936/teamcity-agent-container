@@ -19,7 +19,7 @@ RUN yay -S --noconfirm --needed npm yarn pnpm bun nodejs eslint typescript
 
 RUN yay -S --noconfirm --needed rustup && rustup default stable
 
-RUN yay -S --noconfirm --needed cross nsis cargo-xwin lld llvm 
+RUN yay -S --noconfirm --needed cross nsis cargo-xwin lld llvm clang
 
 RUN yay -Scc --noconfirm
 
