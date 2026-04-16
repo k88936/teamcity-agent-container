@@ -26,6 +26,7 @@ RUN yay -Scc --noconfirm
 USER root
 RUN rustup default stable
 RUN rustup target add x86_64-pc-windows-msvc
+RUN rustup target add aarch64-linux-android 
 
 RUN  archlinux-java set java-21-openjdk
 
