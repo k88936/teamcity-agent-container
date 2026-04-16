@@ -44,6 +44,7 @@ ENV GOPATH=/cache/go
 
 
 USER root
+ENV AGENT_VERSION=2025.11.4
 ENV AGENT_DIST=/opt/buildagent \
     CONFIG_DIR=/data/conf \
     LOG_DIR=/opt/buildagent/logs
