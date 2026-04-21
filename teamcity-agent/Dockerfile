@@ -43,8 +43,6 @@ ENV PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$P
 ENV PATH="$HOME/.cargo/bin:$PATH"
 ENV GOPATH=/cache/go
 
-
-USER root
 ENV AGENT_VERSION=2025.11.4
 ENV AGENT_DIST=/opt/buildagent \
     CONFIG_DIR=/data/conf \
