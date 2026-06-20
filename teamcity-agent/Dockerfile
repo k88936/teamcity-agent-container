@@ -17,16 +17,18 @@ RUN yay -S --noconfirm --needed go
 
 RUN yay -S --noconfirm --needed npm yarn pnpm bun nodejs eslint typescript
 
-RUN yay -S --noconfirm --needed rustup && rustup default stable
+RUN yay -S --noconfirm --needed rustup 
+RUN RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup default stable
 
 RUN yay -S --noconfirm --needed cross nsis cargo-xwin lld llvm clang
 
-RUN yay -Scc --noconfirm
+RUN yay -Scc --noconfirm && rm /home/yay/* -rf
 
 USER root
-RUN rustup default stable
-RUN rustup target add x86_64-pc-windows-msvc
-RUN rustup target add aarch64-linux-android 
+
+RUN RURUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup default stable && \
+    RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup target add x86_64-pc-windows-msvc && \
+    RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup target add aarch64-linux-android
 
 RUN cargo xwin cache xwin --xwin-arch x86_64
 
