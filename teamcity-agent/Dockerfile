@@ -32,7 +32,7 @@ RUN yay -S --noconfirm --needed go
 
 RUN yay -S --noconfirm --needed npm yarn pnpm bun nodejs eslint typescript
 
-RUN yay -S --noconfirm --needed rustup && RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup default stable yay -S --noconfirm --needed cross nsis cargo-xwin lld llvm clang
+RUN yay -S --noconfirm --needed rustup && RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup default stable && yay -S --noconfirm --needed cross nsis cargo-xwin lld llvm clang
 
 RUN yay -Scc --noconfirm && rm /home/yay/* -rf
 
