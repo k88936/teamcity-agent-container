@@ -3,7 +3,7 @@ ENV IMAGE_VERSION=1
 
 RUN sed -i '1i Server = https://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch' /etc/pacman.d/mirrorlist \
     && pacman -Syyu --noconfirm \
-    && pacman -S --noconfirm --needed sudo git which
+    && pacman -S --noconfirm --needed sudo git gnupg
 
 RUN useradd -m -G wheel -s /bin/bash yay \
     && echo '%wheel ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/99-wheel \
@@ -16,7 +16,9 @@ RUN git clone https://aur.archlinux.org/yay-bin.git /home/yay/yay-bin \
     && cd /home/yay \
     && rm -rf /home/yay/yay-bin
 
-RUN yay -Syy --noconfirm --needed git git-lfs jq zip unzip xz 7zip tar wget curl openssh uv
+RUN yay -Syy --noconfirm --needed git git-lfs jq zip unzip xz 7zip tar wget curl openssh
+
+RUN yay -S --noconfirm --needed uv python
 
 RUN yay -S --noconfirm --needed inetutils net-tools 
 
