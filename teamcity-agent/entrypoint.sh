@@ -1,4 +1,8 @@
-#!/bin/bash
+#!/bin/sh
+set -e
+source /etc/profile
+
+/cache.sh
 
 check() {
    if [[ $? != 0 ]]; then
