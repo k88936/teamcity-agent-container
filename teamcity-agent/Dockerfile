@@ -48,16 +48,6 @@ RUN cargo xwin cache xwin --xwin-arch x86_64
 
 RUN archlinux-java set java-21-openjdk
 
-RUN echo "mkdir -p /cache" >> /cache.sh && chmod +x /cache.sh
-RUN echo "mkdir -p /cache/m2 && ln -s /cache/m2 /root/.m2" >> /cache.sh
-RUN echo "mkdir -p /cache/gradle && ln -s /cache/gradle /root/.gradle" >> /cache.sh
-RUN echo "mkdir -p /cache/npm && ln -s /cache/npm /root/.npm" >> /cache.sh
-RUN echo "mkdir -p /cache/bun && ln -s /cache/npm /root/.bun" >> /cache.sh
-RUN echo "mkdir -p /cache/pnpm /root/.local/share/ && ln -s /cache/pnpm /root/.local/share/pnpm" >> /cache.sh
-RUN echo "mkdir -p /cache/yarn /usr/local/share/.cache/ && ln -s /usr/local/share/.cache/yarn" >> /cache.sh
-RUN echo "mkdir -p /cache/rust && ln -s /cache/rust /root/.cargo" >> /cache.sh
-RUN echo "mkdir -p /cache/cargo-xwin && ln -s /cache/cargo-xwin /root/.cache/cargo-xwin/" >> /cache.sh
-
 ENV ANDROID_HOME=/cache/android-sdk
 ENV PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH"
 ENV PATH="$HOME/.cargo/bin:$PATH"
@@ -78,6 +68,6 @@ RUN wget --no-proxy "https://teamcity.k88936.top/update/buildAgentFull.zip" -O /
     && mkdir -p ${CONFIG_DIR} \
     && mkdir -p ${LOG_DIR}
 
-COPY entrypoint.sh /
-RUN chmod +x /entrypoint.sh
+COPY entrypoint.sh cache.sh /
+RUN chmod +x /entrypoint.sh /cache.sh
 ENTRYPOINT ["/entrypoint.sh"]
