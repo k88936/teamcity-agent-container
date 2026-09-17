@@ -1,5 +1,5 @@
 FROM archlinux:base-devel
-ENV IMAGE_VERSION=1
+ENV IMAGE_VERSION=2
 
 RUN sed -i '1i Server = https://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch' /etc/pacman.d/mirrorlist \
     && pacman -Syyu --noconfirm \
