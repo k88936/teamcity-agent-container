@@ -5,9 +5,12 @@ RUN sed -i '1i Server = https://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/
     && pacman -Syyu --noconfirm \
     && pacman -S --noconfirm --needed sudo git gnupg
 
-RUN useradd -m -G wheel -s /bin/bash yay \
-    && echo '%wheel ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/99-wheel \
-    && chmod 0440 /etc/sudoers.d/99-wheel
+# Build-only account: locked password and nologin; Docker RUN does not use a login shell.
+RUN useradd -m -s /usr/bin/nologin yay \
+    && passwd -l yay \
+    && echo 'yay ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/99-yay \
+    && chmod 0440 /etc/sudoers.d/99-yay \
+    && visudo -c -f /etc/sudoers.d/99-yay
 
 USER yay
 RUN git clone https://aur.archlinux.org/yay-bin.git /home/yay/yay-bin \
