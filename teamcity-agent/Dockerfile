@@ -5,7 +5,9 @@ RUN sed -i '1i Server = https://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/
     && pacman -Syyu --noconfirm \
     && pacman -S --noconfirm --needed sudo git gnupg
 
-# Build-only account: locked password and nologin; Docker RUN does not use a login shell.
+RUN sed -i -E '/^OPTIONS=\(/ s/(^|[[:space:]])debug([[:space:])])/\1!debug\2/' /etc/makepkg.conf \
+    && grep -Eq '^OPTIONS=.*!debug' /etc/makepkg.conf
+
 RUN useradd -m -s /usr/bin/nologin yay \
     && passwd -l yay \
     && echo 'yay ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/99-yay \
