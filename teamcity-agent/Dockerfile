@@ -40,9 +40,7 @@ RUN yay -S --noconfirm --needed go
 RUN yay -S --noconfirm --needed npm yarn pnpm bun nodejs eslint typescript
 
 RUN yay -S --noconfirm --needed rustup 
-RUN RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup default stable && \
-    RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup target add x86_64-pc-windows-msvc && \
-    RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup target add aarch64-linux-android
+RUN RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup default stable
 RUN yay -S --noconfirm --needed cross nsis cargo-xwin lld llvm clang
 RUN yay -S --noconfirm --needed gtk3 webkit2gtk-4.1 appmenu-gtk-module libappindicator-gtk3 alsa-lib
 RUN yay -Scc --noconfirm && rm /home/yay/* -rf
@@ -51,6 +49,10 @@ USER root
 
 RUN mkdir -p /usr/lib/gdk-pixbuf-2.0/2.10.0/loaders &&\
     gdk-pixbuf-query-loaders > /usr/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache
+
+RUN RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup default stable && \
+    RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup target add x86_64-pc-windows-msvc && \
+    RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup target add aarch64-linux-android
 
 RUN cargo xwin cache xwin --xwin-arch x86_64
 
