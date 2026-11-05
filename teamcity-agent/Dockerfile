@@ -1,5 +1,5 @@
 FROM archlinux:base-devel
-ENV IMAGE_VERSION=3
+ENV IMAGE_VERSION=4
 
 RUN sed -i '1i Server = https://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch' /etc/pacman.d/mirrorlist \
     && pacman -Syyu --noconfirm \
@@ -42,8 +42,10 @@ RUN yay -S --noconfirm --needed npm yarn pnpm bun nodejs eslint typescript
 RUN yay -S --noconfirm --needed rustup 
 RUN RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup default stable
 RUN yay -S --noconfirm --needed cross nsis cargo-xwin lld llvm clang
-RUN yay -S --noconfirm --needed gtk3 webkit2gtk-4.1 appmenu-gtk-module libappindicator-gtk3 \
+RUN yay -S --noconfirm --needed gtk3 webkit2gtk-4.1 appmenu-gtk-module libappindicator-gtk3 alsa-lib
 RUN yay -Scc --noconfirm && rm /home/yay/* -rf
+
+USER root
 
 RUN RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup default stable && \
     RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup target add x86_64-pc-windows-msvc && \
