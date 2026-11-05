@@ -40,16 +40,17 @@ RUN yay -S --noconfirm --needed go
 RUN yay -S --noconfirm --needed npm yarn pnpm bun nodejs eslint typescript
 
 RUN yay -S --noconfirm --needed rustup 
-RUN RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup default stable
+RUN RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup default stable && \
+    RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup target add x86_64-pc-windows-msvc && \
+    RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup target add aarch64-linux-android
 RUN yay -S --noconfirm --needed cross nsis cargo-xwin lld llvm clang
 RUN yay -S --noconfirm --needed gtk3 webkit2gtk-4.1 appmenu-gtk-module libappindicator-gtk3 alsa-lib
 RUN yay -Scc --noconfirm && rm /home/yay/* -rf
 
 USER root
 
-RUN RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup default stable && \
-    RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup target add x86_64-pc-windows-msvc && \
-    RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup target add aarch64-linux-android
+RUN mkdir -p /usr/lib/gdk-pixbuf-2.0/2.10.0/loaders &&\
+    gdk-pixbuf-query-loaders > /usr/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache
 
 RUN cargo xwin cache xwin --xwin-arch x86_64
 
@@ -60,7 +61,6 @@ ENV PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$P
 ENV PATH="$HOME/.cargo/bin:$PATH"
 ENV GOPATH=/cache/go
 
-ENV AGENT_VERSION=2026.1
 ENV AGENT_DIST=/opt/buildagent \
     CONFIG_DIR=/data/conf \
     LOG_DIR=/opt/buildagent/logs
