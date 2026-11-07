@@ -14,7 +14,7 @@ link_cache() {
     ln -sfn "$src" "$dest"
 }
 
-mkdir -p /cache/m2 /cache/gradle /cache/npm /cache/bun /cache/pnpm /cache/pnpm/store /cache/pnpm/cache /cache/yarn /cache/rust /cache/cargo-xwin
+mkdir -p /cache/m2 /cache/gradle /cache/npm /cache/bun /cache/pnpm /cache/pnpm/store /cache/pnpm/cache /cache/yarn /cache/rust
 
 link_cache /cache/m2 /root/.m2
 link_cache /cache/gradle /root/.gradle
@@ -29,17 +29,3 @@ if [ -d /cache/npm/install/cache ] && [ ! -e /cache/bun/install/cache ]; then
     mv /cache/npm/install/cache /cache/bun/install/cache
 fi
 link_cache /cache/bun /root/.bun
-
-# The image ships the xwin SDK outside the cache volume; seed the volume once, then
-# keep all runtime updates on the persistent volume.
-if [ -d /opt/cargo-xwin-cache ] && [ -z "$(ls -A /cache/cargo-xwin)" ]; then
-    cp -a /opt/cargo-xwin-cache/. /cache/cargo-xwin/
-fi
-if [ -d /root/.cache/cargo-xwin ] && [ ! -L /root/.cache/cargo-xwin ]; then
-    if [ -z "$(ls -A /cache/cargo-xwin)" ]; then
-        cp -a /root/.cache/cargo-xwin/. /cache/cargo-xwin/
-    fi
-    rm -rf /root/.cache/cargo-xwin
-fi
-rm -f /cache/cargo-xwin/cargo-xwin
-link_cache /cache/cargo-xwin /root/.cache/cargo-xwin

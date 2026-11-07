@@ -54,11 +54,8 @@ RUN RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup defaul
     RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup target add x86_64-pc-windows-msvc && \
     RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup target add aarch64-linux-android
 
-RUN cargo xwin cache xwin --xwin-arch x86_64 \
-    && ln -sf pathcch.lib ~/.cache/cargo-xwin/xwin/sdk/lib/um/x86_64/PathCch.lib \
-    && mkdir -p /opt/cargo-xwin-cache \
-    && mv ~/.cache/cargo-xwin/. /opt/cargo-xwin-cache/ \
-    && rmdir ~/.cache/cargo-xwin
+RUN cargo xwin cache xwin --xwin-arch x86_64
+RUN ln -sf pathcch.lib ~/.cache/cargo-xwin/xwin/sdk/lib/um/x86_64/PathCch.lib
 
 RUN archlinux-java set java-21-openjdk
 
