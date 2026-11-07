@@ -6,7 +6,7 @@ link_cache() {
     cache=$1
     link=$2
 
-    mkdir -p "$cache" && mkdir -p "$(dirname "$link")" && ln -s "$cache" "$link"
+    mkdir -p "$cache" && mkdir -p "$(dirname "$link")" && ln -sfn "$cache" "$link"
 }
 
 link_cache /cache/m2 /root/.m2
