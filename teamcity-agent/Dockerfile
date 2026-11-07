@@ -63,6 +63,8 @@ ENV ANDROID_HOME=/cache/android-sdk
 ENV PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH"
 ENV PATH="$HOME/.cargo/bin:$PATH"
 ENV GOPATH=/cache/go
+ENV PNPM_CONFIG_STORE_DIR=/cache/pnpm/store \
+    PNPM_CONFIG_CACHE_DIR=/cache/pnpm/cache
 
 ENV AGENT_DIST=/opt/buildagent \
     CONFIG_DIR=/data/conf \

@@ -12,8 +12,7 @@ link_cache() {
 link_cache /cache/m2 /root/.m2
 link_cache /cache/gradle /root/.gradle
 link_cache /cache/npm /root/.npm
-mkdir -p /cache/bun
-link_cache /cache/npm /root/.bun
+link_cache /cache/bun /root/.bun
 link_cache /cache/pnpm /root/.local/share/pnpm
-mkdir -p /cache/yarn /usr/local/share/.cache/ && ln -s /usr/local/share/.cache/yarn
+link_cache /cache/yarn /usr/local/share/.cache/yarn
 link_cache /cache/rust /root/.cargo
