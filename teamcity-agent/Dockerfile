@@ -54,7 +54,11 @@ RUN RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup defaul
     RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup target add x86_64-pc-windows-msvc && \
     RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup target add aarch64-linux-android
 
-RUN cargo xwin cache xwin --xwin-arch x86_64
+RUN cargo xwin cache xwin --xwin-arch x86_64 \
+    && ln -sf pathcch.lib ~/.cache/cargo-xwin/xwin/sdk/lib/um/x86_64/PathCch.lib \
+    && mkdir -p /opt/cargo-xwin-cache \
+    && mv ~/.cache/cargo-xwin/. /opt/cargo-xwin-cache/ \
+    && rmdir ~/.cache/cargo-xwin
 
 RUN archlinux-java set java-21-openjdk
 
@@ -62,6 +66,8 @@ ENV ANDROID_HOME=/cache/android-sdk
 ENV PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH"
 ENV PATH="$HOME/.cargo/bin:$PATH"
 ENV GOPATH=/cache/go
+ENV PNPM_CONFIG_STORE_DIR=/cache/pnpm/store \
+    PNPM_CONFIG_CACHE_DIR=/cache/pnpm/cache
 
 ENV AGENT_DIST=/opt/buildagent \
     CONFIG_DIR=/data/conf \
