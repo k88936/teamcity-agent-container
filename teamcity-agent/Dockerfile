@@ -1,7 +1,8 @@
 FROM archlinux:base-devel
 ENV IMAGE_VERSION=4
 
-RUN sed -i '1i Server = https://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch' /etc/pacman.d/mirrorlist \
+RUN --mount=type=cache,target=/var/cache/pacman/pkg \
+    sed -i '1i Server = https://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch' /etc/pacman.d/mirrorlist \
     && pacman -Syyu --noconfirm \
     && pacman -S --noconfirm --needed sudo git gnupg
 
@@ -21,29 +22,18 @@ RUN git clone https://aur.archlinux.org/yay-bin.git /home/yay/yay-bin \
     && cd /home/yay \
     && rm -rf /home/yay/yay-bin
 
-RUN yay -Syy --noconfirm --needed git git-lfs jq zip unzip xz 7zip tar wget curl openssh
-
-RUN yay -S --noconfirm --needed uv python
-
-RUN yay -S --noconfirm --needed inetutils net-tools 
-
-RUN yay -S --noconfirm --needed podman podman-compose
-
-RUN yay -S --noconfirm --needed github-cli aws-cli
-
-RUN yay -S --noconfirm --needed jdk21-openjdk jdk8-openjdk maven
-
-RUN yay -S --noconfirm --needed sdkmanager
-
-RUN yay -S --noconfirm --needed go
-
-RUN yay -S --noconfirm --needed npm yarn pnpm bun nodejs eslint typescript
-
-RUN yay -S --noconfirm --needed rustup 
-RUN RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup default stable
-RUN yay -S --noconfirm --needed cross nsis cargo-xwin lld llvm clang
-RUN yay -S --noconfirm --needed gtk3 webkit2gtk-4.1 appmenu-gtk-module libappindicator-gtk3 alsa-lib
-RUN yay -Scc --noconfirm && rm /home/yay/* -rf
+RUN --mount=type=cache,target=/var/cache/pacman/pkg \
+    --mount=type=cache,target=/home/yay/.cache/yay,uid=1000,gid=1000 \
+    --mount=type=cache,target=/home/yay/.cargo/registry,uid=1000,gid=1000 \
+    --mount=type=cache,target=/home/yay/.cargo/git,uid=1000,gid=1000 \
+    yay -S --needed --noconfirm \
+        git git-lfs jq zip unzip xz 7zip tar wget curl openssh \
+        uv python inetutils net-tools podman podman-compose \
+        github-cli aws-cli jdk21-openjdk jdk8-openjdk maven sdkmanager \
+        go npm yarn pnpm bun nodejs eslint typescript rustup \
+        cross nsis cargo-xwin lld llvm clang \
+        gtk3 webkit2gtk-4.1 appmenu-gtk-module libappindicator-gtk3 alsa-lib \
+    && RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup default stable
 
 USER root
 
@@ -80,6 +70,5 @@ RUN wget --no-proxy "https://teamcity.k88936.top/update/buildAgentFull.zip" -O /
     && mkdir -p ${CONFIG_DIR} \
     && mkdir -p ${LOG_DIR}
 
-COPY entrypoint.sh cache.sh /
-RUN chmod +x /entrypoint.sh /cache.sh
+COPY --chmod=0755 entrypoint.sh cache.sh /
 ENTRYPOINT ["/entrypoint.sh"]
