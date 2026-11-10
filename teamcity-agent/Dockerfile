@@ -26,14 +26,15 @@ RUN --mount=type=cache,target=/var/cache/pacman/pkg \
     --mount=type=cache,target=/home/yay/.cache/yay,uid=1000,gid=1000 \
     --mount=type=cache,target=/home/yay/.cargo/registry,uid=1000,gid=1000 \
     --mount=type=cache,target=/home/yay/.cargo/git,uid=1000,gid=1000 \
-    yay -S --needed --noconfirm \
+    yay -S --needed --noconfirm rustup \
+    && RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup default stable \
+    && yay -S --needed --noconfirm \
         git git-lfs jq zip unzip xz 7zip tar wget curl openssh \
         uv python inetutils net-tools podman podman-compose \
         github-cli aws-cli jdk21-openjdk jdk8-openjdk maven sdkmanager \
-        go npm yarn pnpm bun nodejs eslint typescript rustup \
+        go npm yarn pnpm bun nodejs eslint typescript \
         cross nsis cargo-xwin lld llvm clang \
-        gtk3 webkit2gtk-4.1 appmenu-gtk-module libappindicator-gtk3 alsa-lib \
-    && RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup default stable
+        gtk3 webkit2gtk-4.1 appmenu-gtk-module libappindicator-gtk3 alsa-lib
 
 USER root
 
